@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.itwillbs.domain.MemberVO;
+import com.itwillbs.persistence.MemberDAO;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
 		{
@@ -31,6 +34,9 @@ public class MemberTest {
 	// 암호화처리 PWEncoder 객체
 	@Inject
 	private PasswordEncoder pwEncoder;
+	
+	@Inject
+	private MemberDAO mdao;
 	
 	//@Test
 	public void test_회원가입() throws Exception{
@@ -116,6 +122,15 @@ public class MemberTest {
 		
 		
 	}// test
+	
+	@Test
+	public void test_회원정보조회() throws Exception{
+		logger.debug(" test_회원정보조회() 실행");
+		
+		MemberVO vo = mdao.readMember("ADMIN99");
+		
+		logger.debug(" vo : "+vo);
+	}
 	
 	
 	
