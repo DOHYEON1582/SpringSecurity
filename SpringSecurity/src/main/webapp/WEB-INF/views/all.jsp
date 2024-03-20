@@ -8,6 +8,9 @@
 </head>
 <body>
 	<h1>all.jsp</h1>
+	
+	<a href="/member"> member </a> <br>
+	<a href="/admin"> admin </a> <br>
 
 </body>
 </html>

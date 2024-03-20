@@ -30,7 +30,13 @@ public class CommonController {
 		
 	}
 	
-	
+	// 로그아웃 페이지
+	@GetMapping(value = "customLogout")
+	public void customLogout() {
+		logger.info(" customLogout() 호출");
+		
+		
+	}
 	
 	
 	

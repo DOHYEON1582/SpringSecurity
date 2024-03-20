@@ -40,16 +40,30 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 			roleNames.add(authority.getAuthority());
 		});
 		
-	
-		
-		
 		logger.info(" roleNames : "+roleNames);
 		
+		// 권한별로 이동가능한 페이지 호출
+		if(roleNames.contains("ROLE_ADMIN")) {// 관리자 권한
+			logger.info(" 관리자 권한 아이디 로그인! ");
+			response.sendRedirect("/admin");
+			return;
+		}
 		
+		if(roleNames.contains("ROLE_MANAGER")) {
+			logger.info(" 회원 권한 아이디 로그인! ");
+			response.sendRedirect("/member");
+			return;
+		}
+		
+		// 권한이 없는 일반로그인/접근
+		logger.info(" 권한이 없는 로그인!");
+		response.sendRedirect("/all");
 		
 	}
 	
 	
 	
 	
-}
+	
+	
+} //handler

@@ -8,6 +8,11 @@
 </head>
 <body>
 	<h1>admin.jsp</h1>
+	
+	<a href="/all"> all </a> <br>
+	<a href="/member"> member </a> <br>
+	
+	<a href="/customLogout">로그아웃</a>
 
 </body>
 </html>

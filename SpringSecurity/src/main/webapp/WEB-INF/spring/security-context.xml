@@ -11,12 +11,16 @@
 	<bean id="CustomAccessDenied" class="com.itwillbs.security.CustomAccessDeniedHandler"/>
 	<!-- 로그인 처리 후 이동 객체 -->
 	<bean id="CustomLoginSuccess" class="com.itwillbs.security.CustomLoginSuccessHandler"/>
+	<!-- 암호화 처리 객체(임시 - 실제 암호화X) -->
+	<!-- <bean id="customNoopPasswordEncoder" class="com.itwillbs.security.CustomNoopPasswordEncoder"/> -->
+	<!-- 암호화 처리 객체(실제 암호화) -->
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 	
 	
 	<security:http>
 	
 		<security:intercept-url pattern="/all" access="permitAll"/>
-		<security:intercept-url pattern="/member" access="hasRole('ROLE_MEMBER')"/>
+		<security:intercept-url pattern="/member" access="hasRole('ROLE_MANAGER')"/>
 		<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
 		
 		<security:intercept-url pattern="/board/*" access="hasRole('ROLE_ADMIN')"/>
@@ -25,6 +29,11 @@
 		<!-- 시큐리티에서 제공하는 기본 로그인페이지 설정(기본값) -->
 		<security:form-login login-page="/customLogin" 
 							 authentication-success-handler-ref="CustomLoginSuccess"/>
+							 
+		<!-- 로그 아웃 -->
+		<security:logout logout-url="/customLogout" invalidate-session="true"/>					 
+							 
+							 
 		
 		 	 <!-- 접근 권한이 없을때 보여지는 뷰페이지 설정 --> 
 		<!-- <security:access-denied-handler error-page="/accessErr"/> -->
@@ -38,13 +47,24 @@
 	<security:authentication-manager>
 		<!-- 시큐리티 관련 처리(경비팀 소속 경비원) -->
 		<security:authentication-provider>
+			<!-- 사용자 인증 정보 관리 (+JDBC)-->
+			<!-- <security:jdbc-user-service data-source-ref="dataSource"/> -->
+			<security:jdbc-user-service data-source-ref="dataSource" 
+										users-by-username-query="select userid,userpw,enabled from tbl_member where userid=?" 
+										authorities-by-username-query="select userid,auth from tbl_member_auth where userid=?"/>
+			
+			<!-- 사용자 암호화 처리 정보 -->
+			<!-- <security:password-encoder ref="customNoopPasswordEncoder"/> -->
+			<security:password-encoder ref="bcryptPasswordEncoder"/>
+		
+		
 			<!-- 사용자 인증 정보 관리 -->
-			<security:user-service>
-				<!-- 사용자 정보 등록(방문록 작성) -->
+			<!-- <security:user-service>
+				사용자 정보 등록(방문록 작성)
 				<security:user name="itwill" password="{noop}1234" authorities="ROLE_MEMBER"/>
 				<security:user name="admin" password="{noop}1234" authorities="ROLE_MEMBER,ROLE_ADMIN"/>
 				
-			</security:user-service>		
+			</security:user-service>		 -->
 		</security:authentication-provider>
 	</security:authentication-manager>
 

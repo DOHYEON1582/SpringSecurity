@@ -1,0 +1,22 @@
+security.txt
+
+https://github.com/spring-projects/spring-security/blob/main/core/src/main/java/org/springframework/security/provisioning/JdbcUserDetailsManager.java
+
+=> 스프링팀에서 제공하는 스트링 시큐리티 동작에 필요한 형태
+
+public static final String DEF_CREATE_USER_SQL 
+  = "insert into users (username, password, enabled) values (?,?,?)";
+  
+  > create table users(
+  	username varchar(50) primary key,
+  	password varchar(50) not null,
+  	enabled varchar(1) default '1'
+  );
+  
+public static final String DEF_INSERT_AUTHORITY_SQL 
+  = "insert into authorities (username, authority) values (?,?)";
+  
+  
+  // 기존 테이블 수정
+  tbl_member 테이블 enabled 추가/ userpw 사이즈 변경
+  auth 테이블 생성
